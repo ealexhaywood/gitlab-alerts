@@ -9,6 +9,7 @@ app.use(bodyParser.json())
 app.post('/alerts', (req, res) => {
   let alerts = req.body;
   // Do stuff with alerts
+  console.log(alerts);
 
   res.status(200).send(alerts);
 });

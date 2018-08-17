@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  prometheus-server:
+    image: prom/prometheus:v2.3.2
+    ports:
+      - 9090:9090
+    volumes:
+      - ./prometheus-server.yml:/etc/prometheus/prometheus.yml
+      - ./node-exporter-rules.yml:/etc/prometheus/node-exporter-rules.yml
+    
+  node-exporter:
+    image: prom/node-exporter
+    ports:
+      - 9100:9100
+    
+  alertmanager:
+    image: prom/alertmanager:v0.15.2
+    ports:
+      - 9093:9093
+    volumes:
+      - ./alertmanager.yml:/etc/alertmanager/alertmanager.yml

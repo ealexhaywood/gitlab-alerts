@@ -1,0 +1,11 @@
+groups:
+- name: node-exporter
+  rules:
+  - alert: HighCpuLoad
+    expr: node_load1 > 0
+    for: 1s
+    labels:
+      severity: fatal
+    annotations:
+      summary: "High cpu usage on {{ $labels.instance }}"
+      description: "{{ $labels.instance }} has a a cpu usage above 80% (current value: {{ $value }}s)"

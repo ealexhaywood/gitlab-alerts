@@ -1,0 +1,12 @@
+route:
+  receiver: 'gitlab-alerts'
+  group_wait: 30s
+  group_interval: 5m
+  repeat_interval: 24h
+  group_by: [alertname]
+
+receivers:
+- name: 'gitlab-alerts'
+  webhook_configs:
+  - url: 'http://host.docker.internal:3005/alerts'
+    send_resolved: true
