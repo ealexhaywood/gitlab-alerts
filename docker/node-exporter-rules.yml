@@ -1,11 +1,11 @@
 groups:
 - name: node-exporter
   rules:
-  - alert: HighCpuLoad
-    expr: node_load1 > 0
+  - alert: BootTimeTooHigh
+    expr: node_boot_time_seconds > 0
     for: 1s
     labels:
       severity: fatal
     annotations:
-      summary: "High cpu usage on {{ $labels.instance }}"
-      description: "{{ $labels.instance }} has a a cpu usage above 80% (current value: {{ $value }}s)"
+      summary: "Boot time took too long on {{ $labels.instance }}"
+      description: "{{ $labels.instance }} had a boot time of (current value: {{ $value }}s).  This is unacceptable :P"
