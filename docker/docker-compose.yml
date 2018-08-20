@@ -20,3 +20,21 @@ services:
       - 9093:9093
     volumes:
       - ./alertmanager.yml:/etc/alertmanager/alertmanager.yml
+
+  gitlab:
+    image: 'gitlab/gitlab-ce:latest'
+    restart: always
+    hostname: 'gitlab.example.com'
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url 'http://gitlab.example.com:30080'
+        gitlab_rails['gitlab_shell_ssh_port']=30022;
+        # Add any other gitlab.rb configuration here, each on its own line
+    ports:
+      - '30080:30080'
+      # - '443:443'
+      - '30022:22'
+    volumes:
+      - './gitlab/config:/etc/gitlab'
+      - './gitlab/logs:/var/log/gitlab'
+      - './gitlab/data:/var/opt/gitlab'

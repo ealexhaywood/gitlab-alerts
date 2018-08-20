@@ -1,5 +1,5 @@
 # gitlab-alerts
-GitLab Integration for Prometheus Alertmanager
+GitLab Integration for Prometheus Alertmanager.  This project is a webhook receiver that autogenerates Gitlab issues from dispatched Alertmanager JSON.
 
 # Dependencies
 * npm v5.10.0+
