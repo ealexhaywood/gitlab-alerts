@@ -15,7 +15,7 @@ if (config.ssl.enabled) {
 }
 
 app
-  .post('/alerts', async (res, req) => {
+  .post('/alerts', (res, req) => {
     /* Note that you cannot read from req after returning from here */
     const url = req.getUrl();
 
