@@ -15,25 +15,30 @@ if (config.ssl.enabled) {
 }
 
 app
-  .post('/alerts', (res, req) => {
+  .post('/alerts', async (res, req) => {
     /* Note that you cannot read from req after returning from here */
     const url = req.getUrl();
 
     /* Read the body until done or error */
     readJson(
       res,
-      alerts => {
+      async alerts => {
         console.debug('Posted to ' + url + ': ');
         console.debug(
           util.inspect(alerts, { showHidden: true, depth: null, colors: true })
         );
 
-        sendToGitLab(alerts);
+        /* Awaiting will yield and effectively return to C++, so you need to have called onAborted */
+        await sendToGitLab(alerts);
 
-        res.end(JSON.stringify(alerts));
+        /* If we were aborted, you cannot respond */
+        if (!res.aborted) {
+          res.end(JSON.stringify(alerts));
+        }
       },
       () => {
         /* Request was prematurely aborted or invalid or missing, stop reading */
+        res.aborted = true;
         console.error('Invalid JSON or no data at all!');
       }
     );
@@ -86,7 +91,7 @@ const readJson = (res, cb, err) => {
   res.onAborted(err);
 };
 
-const sendToGitLab = alerts => {
+const sendToGitLab = async alerts => {
   const alertsArray = alerts.alerts;
   alertsArray.forEach(alert => {
     // Create issues in gitlab
