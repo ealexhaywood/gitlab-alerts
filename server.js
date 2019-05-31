@@ -1,7 +1,9 @@
 const uWS = require('uWebSockets.js');
-const port = 3005;
 const util = require('util');
 const config = require('./config');
+const fetch = require('node-fetch');
+
+const port = config.port;
 
 let app;
 if (config.ssl.enabled) {
@@ -92,8 +94,64 @@ const readJson = (res, cb, err) => {
 };
 
 const sendToGitLab = async alerts => {
+  const gitlabConfig = config.gitlab;
+
   const alertsArray = alerts.alerts;
-  alertsArray.forEach(alert => {
+  alertsArray.forEach(async alert => {
     // Create issues in gitlab
+    const postUrl =
+      gitlabConfig.url + '/api/v4/projects/' + gitlabConfig.id + '/issues';
+
+    const title = alert.labels.alertname;
+    const description = buildDescription(alert);
+
+    const body = {
+      title,
+      description
+    };
+
+    const response = await fetch(postUrl, {
+      method: 'post',
+      body: JSON.stringify(body),
+      headers: {
+        'Content-Type': 'application/json',
+        'PRIVATE-TOKEN': gitlabConfig.access_token
+      }
+    });
+
+    const json = await response.json();
+    console.log(json);
+    if (response.status !== 200 && response.status !== 201) {
+      console.error(`Invalid response status ${response.status}.`);
+      throw json;
+    }
   });
+};
+
+const buildDescription = alert => {
+  let description = '';
+
+  const status = alert.status;
+  description += 'status: ' + status + '  \n  \n';
+
+  const labels = alert.labels;
+  Object.entries(labels).forEach(([key, value]) => {
+    description += key + ': ' + value + '  \n  \n';
+  });
+
+  const annotations = alert.annotations;
+  Object.entries(annotations).forEach(([key, value]) => {
+    description += key + ': ' + value + '  \n  \n';
+  });
+
+  const startsAt = alert.startsAt;
+  description += 'startsAt: ' + startsAt + '  \n  \n';
+
+  const endsAt = alert.endsAt;
+  description += 'endsAt: ' + endsAt + '  \n  \n';
+
+  const generatorURL = alert.generatorURL;
+  description += 'generatorURL: ' + generatorURL + '  \n  \n';
+
+  return description;
 };

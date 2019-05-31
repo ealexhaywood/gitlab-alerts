@@ -8,6 +8,7 @@
     "dev": "nodemon server.js"
   },
   "dependencies": {
+    "node-fetch": "^2.6.0",
     "uWebSockets.js": "github:uNetworking/uWebSockets.js#v15.10.0"
   },
   "devDependencies": {
