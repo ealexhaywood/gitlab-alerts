@@ -153,7 +153,5 @@ const buildDescription = alert => {
   const generatorURL = alert.generatorURL;
   description += 'generatorURL: ' + generatorURL + '  \n  \n';
 
-  const hello = 'hello';
-
   return description;
 };
