@@ -100,7 +100,7 @@ const sendToGitLab = async alerts => {
   alertsArray.forEach(async alert => {
     // Create issues in gitlab
     const postUrl =
-      gitlabConfig.url + '/api/v4/projects/' + gitlabConfig.id + '/issues';
+      gitlabConfig.url + gitlabConfig.api_prefix + gitlabConfig.id + '/issues';
 
     const title = alert.labels.alertname;
     const description = buildDescription(alert);

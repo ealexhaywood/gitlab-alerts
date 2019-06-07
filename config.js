@@ -13,6 +13,7 @@ config.ssl.passphrase = process.env.SSL_PASSPHRASE || '';
 // Configuration for gitlab
 config.gitlab = {};
 config.gitlab.url = process.env.GITLAB_URL || 'http://localhost:30080';
+config.gitlab.api_prefix = process.env.GITLAB_API_PREFIX || '/api/v4/projects/';
 // See https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html#personal-access-tokens
 config.gitlab.access_token = process.env.ACCESS_TOKEN || '6vvgXdrsTBHevctUSxSK';
 config.gitlab.id = process.env.GITLAB_ID || '1';

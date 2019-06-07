@@ -1,8 +1,8 @@
 #
 # ---- Base Node ----
-FROM alpine:3.5 AS base
+FROM alpine:3.9 AS base
 # install node
-RUN apk add --no-cache nodejs-current tini
+RUN apk add --no-cache nodejs tini
 # install git bash, openssh
 RUN apk update && apk upgrade && \
     apk add --no-cache bash git openssh
