@@ -1,7 +1,7 @@
 const config = {};
 
 // This server's port
-config.port = 3005;
+config.port = 80;
 
 // This server's SSL configuration
 config.ssl = {};
