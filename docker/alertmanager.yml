@@ -8,5 +8,5 @@ route:
 receivers:
 - name: 'gitlab-alerts'
   webhook_configs:
-  - url: 'http://host.docker.internal:3005/alerts'
+  - url: 'http://host.docker.internal:80/alerts'
     send_resolved: true
